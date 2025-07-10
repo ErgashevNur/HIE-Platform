@@ -9,10 +9,7 @@ export default function RootLayout() {
 
   useEffect(() => {
     const user = localStorage.getItem("user");
-    if (user) {
-      navigate("/home");
-      toast.success("User have");
-    } else {
+    if (!user && window.location.pathname !== "/login") {
       navigate("/login");
       toast.error("User is not defined");
     }

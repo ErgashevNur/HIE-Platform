@@ -21,12 +21,13 @@ import {
 } from "./ui/dropdown-menu";
 import { Link } from "react-router-dom";
 import path from "path";
+import LanguageSelector from "./LanguageSelector";
 
 export default function Header() {
   const headerIcons = [
     { icon: Briefcase, path: "/home" },
     { icon: FileUser, path: "/resumes" },
-    { icon: MessageSquare, path: "/messages" },
+    // { icon: MessageSquare, path: "/messages" },
     { icon: Badge, path: "/certificates" },
     { icon: Plus, path: "/post-job" },
   ];
@@ -89,15 +90,7 @@ export default function Header() {
                 </Button>
               </li>
 
-              <li>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="hover:bg-gray-100 dark:hover:bg-gray-700"
-                >
-                  <Globe />
-                </Button>
-              </li>
+              <LanguageSelector />
 
               {headerActions.map(({ icon: Icon, key, path }) => (
                 <li key={key}>

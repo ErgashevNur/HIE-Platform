@@ -2,10 +2,11 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, User } from "lucide-react";
 
-export default function Login() {
+export default function Register() {
   const [email, setEmail] = useState("");
+  const [fullName, setFullName] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -16,7 +17,7 @@ export default function Login() {
 
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/authorization/login`,
+        "https://hies.pixl.uz/authorization/register",
         {
           method: "POST",
           headers: {
@@ -24,18 +25,19 @@ export default function Login() {
             Accept: "*/*",
           },
           body: JSON.stringify({
-            email: "superadmin@gmail.com",
-            password: "12345678",
+            email,
+            fullName,
+            password,
           }),
         },
       );
 
       if (!response.ok) {
-        throw new Error("Login failed");
+        throw new Error("Registration failed");
       }
 
       const data = await response.json();
-      console.log("✅ Login success:", data);
+      console.log("✅ Registration success:", data);
 
       localStorage.setItem("user", JSON.stringify(data));
     } catch (error) {
@@ -51,18 +53,35 @@ export default function Login() {
         {/* Header */}
         <div className="mb-12 text-center">
           <div className="mx-auto mb-8 flex h-12 w-12 items-center justify-center rounded-full bg-black">
-            <div className="h-6 w-6 rounded-full bg-white"></div>
+            <User className="h-6 w-6 text-white" />
           </div>
           <h1 className="mb-2 text-3xl font-light tracking-tight text-black">
-            Welcome back
+            Create account
           </h1>
           <p className="text-sm font-normal text-gray-600">
-            Sign in to your account
+            Join us and get started today
           </p>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="space-y-2">
+            <Label
+              htmlFor="fullName"
+              className="text-sm font-medium text-black"
+            >
+              Full name
+            </Label>
+            <Input
+              type="text"
+              id="fullName"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              placeholder="Enter your full name"
+              className="h-12 border-gray-200 bg-white text-black placeholder:text-gray-400 focus:border-black focus:ring-0"
+              required
+            />
+          </div>
+
           <div className="space-y-2">
             <Label htmlFor="email" className="text-sm font-medium text-black">
               Email address
@@ -91,9 +110,10 @@ export default function Login() {
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
+                placeholder="Create a password"
                 className="h-12 border-gray-200 bg-white pr-10 text-black placeholder:text-gray-400 focus:border-black focus:ring-0"
                 required
+                minLength={8}
               />
               <button
                 type="button"
@@ -107,6 +127,9 @@ export default function Login() {
                 )}
               </button>
             </div>
+            <p className="mt-1 text-xs text-gray-500">
+              Password must be at least 8 characters long
+            </p>
           </div>
 
           <Button
@@ -114,24 +137,19 @@ export default function Login() {
             disabled={isLoading}
             className="h-12 w-full bg-black font-medium text-white transition-colors hover:bg-gray-800 disabled:opacity-50"
           >
-            {isLoading ? "Signing in..." : "Sign in"}
+            {isLoading ? "Creating account..." : "Create account"}
           </Button>
         </form>
 
-        {/* Footer */}
         <div className="mt-8 text-center">
           <p className="text-sm text-gray-600">
-            Don't have an account?{" "}
-            <a
-              href="/register"
-              className="font-medium text-black hover:underline"
-            >
-              Sign up
+            Already have an account?{" "}
+            <a href="/login" className="font-medium text-black hover:underline">
+              Sign in
             </a>
           </p>
         </div>
 
-        {/* Divider */}
         <div className="mt-12 border-t border-gray-100 pt-8">
           <p className="text-center text-xs text-gray-400">
             © 2025 Your Company. All rights reserved.

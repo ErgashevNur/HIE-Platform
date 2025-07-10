@@ -9,12 +9,13 @@ export default function LandingPage() {
       <header className="flex items-center justify-between bg-white px-8 py-6 shadow-sm dark:bg-gray-900">
         <h1 className="text-2xl font-bold">HIE</h1>
         <div className="ml-5 flex gap-2">
-          <Link to={"/login"} variant="outline" size="sm">
-            Login
-          </Link>
-          <Link to={"/register"} variant="default" size="sm">
-            Register
-          </Link>
+          <Button variant="outline" size="sm">
+            <Link to={"/login"}>Login</Link>
+          </Button>
+
+          <Button variant="default" size="sm">
+            <Link to={"/register"}>Register</Link>
+          </Button>
         </div>
       </header>
 

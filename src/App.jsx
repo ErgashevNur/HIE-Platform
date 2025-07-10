@@ -9,7 +9,7 @@ import Jobs from "./pages/Jobs";
 import Chat from "./pages/Chat";
 import Favorites from "./pages/Favorites";
 import Notification from "./pages/Notification";
-// import Register from "@/pages/Register";
+import Register from "@/pages/Register";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -21,7 +21,7 @@ export default function App() {
           children: [
             { path: "/", element: <LandingPage /> },
             { path: "/login", element: <Login /> },
-            // { path: "/register", element: <Register /> },
+            { path: "/register", element: <Register /> },
           ],
         },
         {
