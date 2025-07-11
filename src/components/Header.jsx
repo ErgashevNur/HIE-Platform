@@ -22,14 +22,15 @@ import {
 import { Link } from "react-router-dom";
 import path from "path";
 import LanguageSelector from "./LanguageSelector";
+import { Tooltip, TooltipContent, TooltipTrigger } from "./ui/tooltip";
 
 export default function Header() {
   const headerIcons = [
-    { icon: Briefcase, path: "/home" },
-    { icon: FileUser, path: "/resumes" },
+    { icon: Briefcase, path: "/home", text: "Ish qidirish" },
+    { icon: FileUser, path: "/resumes", text: "Resyumelar" },
+    { icon: Badge, path: "/certificates", text: "CV ish e'lonlari" },
+    { icon: Plus, path: "/post-job", text: "Vakansiya qo'shish" },
     // { icon: MessageSquare, path: "/messages" },
-    { icon: Badge, path: "/certificates" },
-    { icon: Plus, path: "/post-job" },
   ];
 
   const headerActions = [
@@ -57,18 +58,25 @@ export default function Header() {
 
           <nav>
             <ul className="flex items-center gap-8">
-              {headerIcons.map(({ icon: Icon, path }, index) => (
+              {headerIcons.map(({ icon: Icon, path, text }, index) => (
                 <li key={index}>
-                  <Button
-                    asChild
-                    variant="ghost"
-                    size="icon"
-                    className="hover:bg-gray-100 dark:hover:bg-gray-700"
-                  >
-                    <Link to={path}>
-                      <Icon className="h-8 w-8" />
-                    </Link>
-                  </Button>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        asChild
+                        variant="ghost"
+                        size="icon"
+                        className="hover:bg-gray-100 dark:hover:bg-gray-700"
+                      >
+                        <Link to={path}>
+                          <Icon className="h-8 w-8" />
+                        </Link>
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>{text}</p>
+                    </TooltipContent>
+                  </Tooltip>
                 </li>
               ))}
             </ul>
