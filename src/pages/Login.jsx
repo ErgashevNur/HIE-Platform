@@ -3,45 +3,35 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff } from "lucide-react";
+import { validation } from "../validations";
+import { toast } from "sonner";
+import { login } from "../requests";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
+    const formData = new FormData(e.target);
+    const res = {};
+    for (const [key, value] of formData.entries()) {
+      res[key] = value;
+    }
 
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/authorization/login`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "*/*",
-          },
-          body: JSON.stringify({
-            email: "superadmin@gmail.com",
-            password: "12345678",
-          }),
+    const result = validation(res);
+    if (result) {
+      const { target, message } = result;
+      e.target[target].focus();
+      toast.error(message);
+    } else {
+      login(res).then(
+        (res) => {
+          console.log(res);
+        },
+        ({ message }) => {
+          toast.error(message);
         },
       );
-
-      if (!response.ok) {
-        throw new Error("Login failed");
-      }
-
-      const data = await response.json();
-      console.log("✅ Login success:", data);
-
-      localStorage.setItem("user", JSON.stringify(data));
-    } catch (error) {
-      console.error("❌ Error:", error.message);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -69,12 +59,10 @@ export default function Login() {
             </Label>
             <Input
               type="email"
+              name="email"
               id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
               className="h-12 border-gray-200 bg-white text-black placeholder:text-gray-400 focus:border-black focus:ring-0"
-              required
             />
           </div>
 
@@ -89,11 +77,9 @@ export default function Login() {
               <Input
                 type={showPassword ? "text" : "password"}
                 id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                name="password"
                 placeholder="Enter your password"
                 className="h-12 border-gray-200 bg-white pr-10 text-black placeholder:text-gray-400 focus:border-black focus:ring-0"
-                required
               />
               <button
                 type="button"
@@ -111,10 +97,9 @@ export default function Login() {
 
           <Button
             type="submit"
-            disabled={isLoading}
             className="h-12 w-full bg-black font-medium text-white transition-colors hover:bg-gray-800 disabled:opacity-50"
           >
-            {isLoading ? "Signing in..." : "Sign in"}
+            Sign in
           </Button>
         </form>
 

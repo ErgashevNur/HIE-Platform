@@ -1,6 +1,5 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import { ThemeProvider } from "@/components/theme-provider";
-import { Toaster } from "@/components/ui/sonner";
 import { useEffect } from "react";
 import { toast } from "sonner";
 
@@ -19,7 +18,6 @@ export default function RootLayout() {
     <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
       <div className="bg-background text-foreground min-h-screen">
         <Outlet />
-        <Toaster />
       </div>
     </ThemeProvider>
   );
